@@ -10,7 +10,7 @@ const modalSettings= {
     modalClass: '.modalClassTest',
     targetContainer: '#content',
     html,
-    closeOnClickOutSide: false
+    closeOnClickOutSide: true
 };
 const testModal = new Modal(modalSettings);
 const styles = {
@@ -28,3 +28,9 @@ const styles = {
 
 testModal.createTheme('test', styles)
     .useTheme('test');
+
+/*
+TODO:
+- useOverlay ( true / false )
+- overlayStyles
+*/

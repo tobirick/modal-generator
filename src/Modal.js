@@ -12,6 +12,15 @@ export class Modal {
         this.modalTheme = undefined;
         this.themes = [];
         this.modalOpen = false;
+        this.overlayStyles = {
+            'z-index': 9,
+            'background': 'rgba(37,50,81,0.4)',
+            'position': 'absolute',
+            'left': 0,
+            'top': 0,
+            'right': 0,
+            'bottom': 0
+        }
         /*
         this.themes['dark'] = {
             'color': 'red',
@@ -40,6 +49,13 @@ export class Modal {
     }
 
     createModal() {
+        const overlay = document.createElement('div');
+        overlay.classList.add('overlay');
+        let overlaystyle = '';
+        for(let s in this.overlayStyles) {
+            overlaystyle += `${s}:${this.overlayStyles[s]};`;
+        }
+        overlay.style.cssText = overlaystyle;
         const modal = document.createElement('div');
         modal.classList.add(this.modalClass.slice(1));
         const container = document.createElement('div');
@@ -47,17 +63,18 @@ export class Modal {
         const close = document.createElement('a');
         close.classList.add('close-modal');
         close.appendChild(document.createTextNode('Close'));
+        overlay.appendChild(modal);
         modal.appendChild(close);
         modal.appendChild(container);
         modal.querySelector('.container').innerHTML = this.html;
         if(this.defaultStyle || this.modalTheme) {
             const styleAttributes = this.styles ? this.styles : this.modalTheme;
-            let styles = '';
+            let style = '';
             for(let s in styleAttributes) {
-                styles += `${s}:${styleAttributes[s]};`;
+                style += `${s}:${styleAttributes[s]};`;
             }
 
-            modal.style.cssText = styles;
+            modal.style.cssText = style;
         }
         this.readyModal = modal;
     }
@@ -82,16 +99,16 @@ export class Modal {
     */
     toggleModal(e) {
         if(e.target.classList.contains(this.clickOpenElement.slice(1))) {
-            document.querySelector(this.targetContainer).insertAdjacentHTML('afterbegin', this.readyModal.outerHTML);
+            document.querySelector(this.targetContainer).insertAdjacentHTML('afterbegin', this.readyModal.parentNode.outerHTML);
             this.modalOpen = true;
         } else if (e.target.classList.contains('close-modal')) {
-            document.querySelector(this.modalClass).remove();
+            document.querySelector(this.modalClass).parentNode.remove();
             this.modalOpen = false;
         }
     }
 
     closeModal() {
-        document.querySelector(this.modalClass).remove();
+        document.querySelector(this.modalClass).parentNode.remove();
         this.modalOpen = false;
     }
 
