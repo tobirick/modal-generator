@@ -6,7 +6,7 @@ export class Modal {
         this.clickCloseElement = settings.clickCloseElement;
         this.modalClass = settings.modalClass;
         this.targetContainer = settings.targetContainer;
-        this.html = settings.html;
+        this.html = typeof settings.html === 'object' ? settings.html.outerHTML : settings.html;
         this.defaultStyle = false;
         this.modalTheme = undefined;
         this.themes = [];

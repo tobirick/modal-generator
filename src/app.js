@@ -1,10 +1,14 @@
 import { Modal } from './Modal';
 
+
+const html = document.createElement('div');
+html.appendChild(document.createTextNode('test test test'));
+
 const modalSettings= {
     clickOpenElement: '.open-modal',
     modalClass: '.modalClassTest',
     targetContainer: '#content',
-    html: '<h1>Das ist ein Test</h1>'
+    html
 };
 const testModal = new Modal(modalSettings);
 const styles = {
