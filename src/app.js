@@ -9,7 +9,8 @@ const modalSettings= {
     clickCloseElement: '.test-close',
     modalClass: '.modalClassTest',
     targetContainer: '#content',
-    html
+    html,
+    closeOnClickOutSide: false
 };
 const testModal = new Modal(modalSettings);
 const styles = {

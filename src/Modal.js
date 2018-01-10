@@ -7,9 +7,11 @@ export class Modal {
         this.modalClass = settings.modalClass;
         this.targetContainer = settings.targetContainer;
         this.html = typeof settings.html === 'object' ? settings.html.outerHTML : settings.html;
+        this.closeOnClickOutSide = settings.closeOnClickOutSide || false;
         this.defaultStyle = false;
         this.modalTheme = undefined;
         this.themes = [];
+        this.modalOpen = false;
         /*
         this.themes['dark'] = {
             'color': 'red',
@@ -27,6 +29,14 @@ export class Modal {
     setEventListeners() {
         document.querySelector(this.clickCloseElement).addEventListener('click', this.closeModal.bind(this));
         document.querySelector('body').addEventListener('click', this.toggleModal.bind(this));
+
+        if(this.closeOnClickOutSide) {
+            document.querySelector('body').addEventListener('click', (e) => {
+                if(this.modalOpen && !e.target.classList.contains(this.modalClass.slice(1)) && !e.target.classList.contains(this.clickOpenElement.slice(1))) {
+                    this.closeModal();
+                }
+            });
+        }
     }
 
     createModal() {
@@ -73,13 +83,16 @@ export class Modal {
     toggleModal(e) {
         if(e.target.classList.contains(this.clickOpenElement.slice(1))) {
             document.querySelector(this.targetContainer).insertAdjacentHTML('afterbegin', this.readyModal.outerHTML);
+            this.modalOpen = true;
         } else if (e.target.classList.contains('close-modal')) {
             document.querySelector(this.modalClass).remove();
+            this.modalOpen = false;
         }
     }
 
     closeModal() {
         document.querySelector(this.modalClass).remove();
+        this.modalOpen = false;
     }
 
     setDefaultStyle(styles) {
