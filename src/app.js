@@ -6,6 +6,7 @@ html.appendChild(document.createTextNode('test test test'));
 
 const modalSettings= {
     clickOpenElement: '.open-modal',
+    clickCloseElement: '.test-close',
     modalClass: '.modalClassTest',
     targetContainer: '#content',
     html

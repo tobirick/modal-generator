@@ -3,7 +3,7 @@ import { ModalTheme } from './ModalTheme';
 export class Modal {
     constructor(settings) {
         this.clickOpenElement = settings.clickOpenElement;
-        this.clickCloseElement = settings.clickCloseElement;
+        this.clickCloseElement = settings.clickCloseElement || undefined;
         this.modalClass = settings.modalClass;
         this.targetContainer = settings.targetContainer;
         this.html = typeof settings.html === 'object' ? settings.html.outerHTML : settings.html;
@@ -25,7 +25,7 @@ export class Modal {
     }
 
     setEventListeners() {
-        //document.querySelector(this.clickOpenElement).addEventListener('click', this.openModal.bind(this));
+        document.querySelector(this.clickCloseElement).addEventListener('click', this.closeModal.bind(this));
         document.querySelector('body').addEventListener('click', this.toggleModal.bind(this));
     }
 
@@ -76,6 +76,10 @@ export class Modal {
         } else if (e.target.classList.contains('close-modal')) {
             document.querySelector(this.modalClass).remove();
         }
+    }
+
+    closeModal() {
+        document.querySelector(this.modalClass).remove();
     }
 
     setDefaultStyle(styles) {
