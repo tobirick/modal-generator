@@ -51,11 +51,7 @@ export class Modal {
     createModal() {
         const overlay = document.createElement('div');
         overlay.classList.add('overlay');
-        let overlaystyle = '';
-        for(let s in this.overlayStyles) {
-            overlaystyle += `${s}:${this.overlayStyles[s]};`;
-        }
-        overlay.style.cssText = overlaystyle;
+        overlay.style.cssText = makeStyle(this.overlayStyles);
         const modal = document.createElement('div');
         modal.classList.add(this.modalClass.slice(1));
         const container = document.createElement('div');
@@ -69,12 +65,7 @@ export class Modal {
         modal.querySelector('.container').innerHTML = this.html;
         if(this.defaultStyle || this.modalTheme) {
             const styleAttributes = this.styles ? this.styles : this.modalTheme;
-            let style = '';
-            for(let s in styleAttributes) {
-                style += `${s}:${styleAttributes[s]};`;
-            }
-
-            modal.style.cssText = style;
+            modal.style.cssText = makeStyle(styleAttributes);
         }
         this.readyModal = modal;
     }
@@ -138,3 +129,5 @@ export class Modal {
         return this;
     }
 }
+
+const makeStyle = (styles) => Object.keys(styles).reduce((prev, key) => prev += `${key}:${styles[key]};`,'');
