@@ -36,9 +36,7 @@ export class Modal {
     }
 
     setEventListeners() {
-        this.clickCloseElement && document.querySelector(this.clickCloseElement).addEventListener('click', this.closeModal.bind(this));
-        document.querySelector('body').addEventListener('click', this.toggleModal.bind(this));
-
+    
         /*
         document.querySelector(this.modalClass).addEventListener('click', (e) => {
             e.stopPropagation();
@@ -47,11 +45,19 @@ export class Modal {
 
         if(this.closeOnClickOutSide) {
             document.querySelector('body').addEventListener('click', (e) => {
-                if(this.modalOpen && !e.target.classList.contains(this.modalClass.slice(1)) && !e.target.classList.contains(this.clickOpenElement && this.clickOpenElement.slice(1))) {
+                const modal = document.querySelector(this.modalClass);
+                if(this.modalOpen && e.target !== modal && !isChildOf(e.target, modal )) {
                     this.closeModal();
                 }
+                /*
+                if(this.modalOpen && !e.target.classList.contains(this.modalClass.slice(1)) && !e.target.classList.contains(this.clickOpenElement && this.clickOpenElement.slice(1))) {
+                    this.closeModal(e);
+                }
+                */
             });
         }
+        this.clickCloseElement && document.querySelector(this.clickCloseElement).addEventListener('click', this.closeModal.bind(this));
+        document.querySelector('body').addEventListener('click', this.toggleModal.bind(this));
     }
 
     createModal() {
@@ -142,3 +148,13 @@ export class Modal {
 }
 
 const makeStyle = (styles) => Object.keys(styles).reduce((prev, key) => prev += `${key}:${styles[key]};`,'');
+
+const isChildOf = (child, parent) => {
+    if (child.parentNode === parent) {
+        return true;
+    } else if (child.parentNode === null) {
+        return false;
+    } else {
+        return isChildOf(child.parentNode, parent);
+    }
+}
