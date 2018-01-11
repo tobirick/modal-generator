@@ -2,7 +2,7 @@ import { ModalTheme } from './ModalTheme';
 
 export class Modal {
     constructor(settings) {
-        this.clickOpenElement = settings.clickOpenElement;
+        this.clickOpenElement = settings.clickOpenElement || undefined;
         this.clickCloseElement = settings.clickCloseElement || undefined;
         this.modalClass = settings.modalClass;
         this.targetContainer = settings.targetContainer;
@@ -36,12 +36,18 @@ export class Modal {
     }
 
     setEventListeners() {
-        document.querySelector(this.clickCloseElement).addEventListener('click', this.closeModal.bind(this));
+        this.clickCloseElement && document.querySelector(this.clickCloseElement).addEventListener('click', this.closeModal.bind(this));
         document.querySelector('body').addEventListener('click', this.toggleModal.bind(this));
+
+        /*
+        document.querySelector(this.modalClass).addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+        */
 
         if(this.closeOnClickOutSide) {
             document.querySelector('body').addEventListener('click', (e) => {
-                if(this.modalOpen && !e.target.classList.contains(this.modalClass.slice(1)) && !e.target.classList.contains(this.clickOpenElement.slice(1))) {
+                if(this.modalOpen && !e.target.classList.contains(this.modalClass.slice(1)) && !e.target.classList.contains(this.clickOpenElement && this.clickOpenElement.slice(1))) {
                     this.closeModal();
                 }
             });
@@ -89,7 +95,7 @@ export class Modal {
     }
     */
     toggleModal(e) {
-        if(e.target.classList.contains(this.clickOpenElement.slice(1))) {
+        if(e.target.classList.contains(this.clickOpenElement && this.clickOpenElement.slice(1))) {
             document.querySelector(this.targetContainer).insertAdjacentHTML('afterbegin', this.readyModal.parentNode.outerHTML);
             this.modalOpen = true;
         } else if (e.target.classList.contains('close-modal')) {
@@ -101,6 +107,11 @@ export class Modal {
     closeModal() {
         document.querySelector(this.modalClass).parentNode.remove();
         this.modalOpen = false;
+    }
+
+    openModal() {
+        document.querySelector(this.targetContainer).insertAdjacentHTML('afterbegin', this.readyModal.parentNode.outerHTML);
+        this.modalOpen = true;
     }
 
     setDefaultStyle(styles) {

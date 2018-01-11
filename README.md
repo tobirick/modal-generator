@@ -1,3 +1,3 @@
 ## Modal Generator
 
-Just a test project for some testing
+Just a project for some testing and personal use
