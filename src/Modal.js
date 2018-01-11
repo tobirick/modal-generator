@@ -21,27 +21,11 @@ export class Modal {
             'right': 0,
             'bottom': 0
         }
-        /*
-        this.themes['dark'] = {
-            'color': 'red',
-            'background-color': 'blue'
-        };
-        this.themes['white'] = {
-            'color': 'white',
-            'background-color': 'black'
-        }
-        */
 
         this.setEventListeners();
     }
 
     setEventListeners() {
-    
-        /*
-        document.querySelector(this.modalClass).addEventListener('click', (e) => {
-            e.stopPropagation();
-        });
-        */
 
         if(this.closeOnClickOutSide) {
             document.querySelector('body').addEventListener('click', (e) => {
@@ -49,11 +33,6 @@ export class Modal {
                 if(this.modalOpen && e.target !== modal && !isChildOf(e.target, modal )) {
                     this.closeModal();
                 }
-                /*
-                if(this.modalOpen && !e.target.classList.contains(this.modalClass.slice(1)) && !e.target.classList.contains(this.clickOpenElement && this.clickOpenElement.slice(1))) {
-                    this.closeModal(e);
-                }
-                */
             });
         }
         this.clickCloseElement && document.querySelector(this.clickCloseElement).addEventListener('click', this.closeModal.bind(this));
@@ -82,31 +61,11 @@ export class Modal {
         this.readyModal = modal;
     }
 
-    /*
-    openModal() {
-        try {
-            document.querySelector(this.targetContainer).insertAdjacentHTML('afterbegin', this.readyModal.outerHTML);
-        } catch (e) {
-            throw new Error("Please use the function createModal if you set no theme or styles");
-        }
-    }
-
-    closeModal(e) {
-        console.log(e.target);
-        try {
-            document.querySelector(this.modalClass).remove();
-        } catch (e) {
-            throw new Error("Please use the function createModal if you set no theme or styles");
-        }
-    }
-    */
     toggleModal(e) {
         if(e.target.classList.contains(this.clickOpenElement && this.clickOpenElement.slice(1))) {
-            document.querySelector(this.targetContainer).insertAdjacentHTML('afterbegin', this.readyModal.parentNode.outerHTML);
-            this.modalOpen = true;
+            this.openModal();
         } else if (e.target.classList.contains('close-modal')) {
-            document.querySelector(this.modalClass).parentNode.remove();
-            this.modalOpen = false;
+            this.closeModal();
         }
     }
 
